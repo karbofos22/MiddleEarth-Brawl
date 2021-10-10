@@ -11,7 +11,7 @@ namespace MiddleEarthBrawl
         protected string Name;
         protected int Health;
         protected int HitStrength;
-        protected float CritChance;
+        protected int CritChance;
 
         protected Fighters CreateElfFighter()
         {
@@ -19,7 +19,7 @@ namespace MiddleEarthBrawl
             anfalen.Name = "Anfalen";
             anfalen.Health = 150;
             anfalen.HitStrength = 2;
-            anfalen.CritChance = 1.9F;
+            anfalen.CritChance = 5;
             return anfalen;
         }
 
@@ -28,8 +28,8 @@ namespace MiddleEarthBrawl
             Fighters balin = new();
             balin.Name = "Balin";
             balin.Health = 250;
-            balin.HitStrength = 6;
-            balin.CritChance = 1.2F;
+            balin.HitStrength = 7;
+            balin.CritChance = 1;
             return balin;
         }
 
@@ -38,8 +38,8 @@ namespace MiddleEarthBrawl
             Fighters sigfrid = new();
             sigfrid.Name = "Sigfrid";
             sigfrid.Health = 100;
-            sigfrid.HitStrength = 4;
-            sigfrid.CritChance = 1.7F;
+            sigfrid.HitStrength = 5;
+            sigfrid.CritChance = 6;
             return sigfrid;
         }
 
@@ -56,19 +56,19 @@ namespace MiddleEarthBrawl
         protected void HitToHead(Fighters player1, Fighters player2OrAi)
         {
             player2OrAi.Health -= (player1.HitStrength * (int)player1.CritChance + 8);
-            Console.WriteLine($"\t{player1.Name} delivers a mighty blow to {player2OrAi.Name} " +
+            Console.WriteLine($" {player1.Name} delivers a mighty blow to {player2OrAi.Name}'s head " +
                               $"for {(player1.HitStrength * (int)player1.CritChance + 8)} points");
         }
         protected void HitToBody(Fighters player1, Fighters player2OrAi)
         {
             player2OrAi.Health -= (player1.HitStrength * (int)player1.CritChance + 6);
-            Console.WriteLine($"\t{player1.Name} delivers a mighty blow to {player2OrAi.Name} " +
+            Console.WriteLine($" {player1.Name} delivers a mighty blow to {player2OrAi.Name}'s body " +
                               $"for {(player1.HitStrength * (int)player1.CritChance + 6)} points");
         }
         protected void HitToLegs(Fighters player1, Fighters player2OrAi)
         {
             player2OrAi.Health -= (player1.HitStrength * (int)player1.CritChance + 4);
-            Console.WriteLine($"\t{player1.Name} delivers a mighty blow to {player2OrAi.Name} " +
+            Console.WriteLine($" {player1.Name} delivers a mighty blow to {player2OrAi.Name}'s legs " +
                               $"for {(player1.HitStrength * (int)player1.CritChance + 4)} points");
         }
         protected string AiHits()
@@ -89,8 +89,8 @@ namespace MiddleEarthBrawl
         protected void HealthStatus(Fighters player1, Fighters player2OrAi)
         {
             Console.WriteLine();
-            Console.WriteLine($"{player1.Name}\t\t\t\t\t\t{player2OrAi.Name}");
-            Console.WriteLine($"{player1.Health}\t\t\t\t\t\t\t{player2OrAi.Health}");
+            Console.WriteLine($"{player1.Name}\t\t\t\t\t\t\t{player2OrAi.Name}");
+            Console.WriteLine($"{player1.Health}\t\t\t\t\t\t\t   {player2OrAi.Health}");
         }
 
         protected bool FightIsOn(Fighters player1, Fighters player2OrAi)
@@ -103,15 +103,14 @@ namespace MiddleEarthBrawl
 
         protected void BattleResult(Fighters player1, Fighters player2OrAi)
         {
+            Console.WriteLine();
             if (player1.Health <= 0)
             {
-                Console.WriteLine($"{player2OrAi.Name} is our winner today!");
-
+                Console.WriteLine($"\t\t{player2OrAi.Name} is our winner today!");
             }
             else if (player2OrAi.Health <= 0)
             {
-                Console.WriteLine($"\n\t{player1.Name} is our winner today!");
-
+                Console.WriteLine($"\t\t{player1.Name} is our winner today!");
             }
         }
     }

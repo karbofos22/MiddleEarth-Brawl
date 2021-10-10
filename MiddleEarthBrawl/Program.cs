@@ -6,16 +6,18 @@ namespace MiddleEarthBrawl
     {
         static void Main(string[] args)
         {
-
-
-            
+           
             CoreOperations newGame = new();
-            newGame.GreetUser();
-            newGame.ChooseGameMode();
-            newGame.ChooseFighter();
-            newGame.FirstStrikeTryOut();
-            newGame.Action();
-
+            while (newGame.PlayAgain)
+            {
+                newGame.GreetUser();
+                newGame.ChooseGameMode();
+                newGame.ChooseFighter();
+                newGame.FirstStrikeTryOut();
+                newGame.Action();
+                newGame.ContinueOrEndGame();
+            }
+            Environment.Exit(1);
 
         }
     }
