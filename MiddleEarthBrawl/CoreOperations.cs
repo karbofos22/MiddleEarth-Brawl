@@ -25,7 +25,7 @@ namespace MiddleEarthBrawl
 
         public void GreetUser()
         {
-            Console.WriteLine("\tGood day to you, sir!\n\tWelcome to our fighting game!\n");
+            Console.WriteLine("\t\t\t  Good day to you, sir!\n\t\t Welcome to our little fighting game!\n");
             Console.WriteLine();
             Console.WriteLine();
         }
@@ -305,7 +305,7 @@ namespace MiddleEarthBrawl
                     Player2Turn = true;
                     break;
                 default:
-                    Console.WriteLine("\t\t\tКоманда не распознана, попробуйте еще раз");
+                    Console.WriteLine("\t\tCommand unknown, try again");
                     Player1StrikeVsPlayer();
                     break;
             }
@@ -331,7 +331,7 @@ namespace MiddleEarthBrawl
                     Aiturn = true;
                     break;
                 default:
-                    Console.WriteLine("\t\t\tКоманда не распознана, попробуйте еще раз");
+                    Console.WriteLine("\t\tCommand unknown, try again");
                     Player1StrikeVsAi();
                     break;
             }
@@ -357,7 +357,7 @@ namespace MiddleEarthBrawl
                     Player1Turn = true;
                     break;
                 default:
-                    Console.WriteLine("\t\t\tКоманда не распознана, попробуйте еще раз");
+                    Console.WriteLine("\t\tCommand unknown, try again");
                     Player2Strike();
                     break;
             }
