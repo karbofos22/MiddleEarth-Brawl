@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MiddleEarthBrawl
 {
-   
+
 
 
     class CoreOperations : Fighters
@@ -16,13 +16,11 @@ namespace MiddleEarthBrawl
         private Fighters player1 { get; set; }
         private Fighters player2 { get; set; }
         private Fighters ai { get; set; }
-        private int gameMode { get; set;}
-        private bool Player1Turn { get; set;}
-        private bool Player2Turn { get; set;}
+        private int gameMode { get; set; }
+        private bool Player1Turn { get; set; }
+        private bool Player2Turn { get; set; }
         private bool Aiturn { get; set; }
-
-
-
+        public bool PlayAgain = true;
 
 
         public void GreetUser()
@@ -56,7 +54,7 @@ namespace MiddleEarthBrawl
         {
             if (gameMode == 1)
             {
-                
+
                 Console.WriteLine(
                 "If you want to choose mighty human knight - enter 1 and press Enter\n" +
                 "If you want to choose brutal dwarf berserker - enter 2 and press Enter\n" +
@@ -157,76 +155,86 @@ namespace MiddleEarthBrawl
                     break;
             }
         }
-       
+
         public void FirstStrikeTryOut()
         {
             Random random = new();
             int player1Toss = 0;
             int player2Toss = 0;
             int aiToss = 0;
-            Console.WriteLine("Warriors! Toss a coin(press \"space\") for the first strike rigth");
-          
+            Console.WriteLine("Warriors! Toss a coin(press \"space\") for the first strike rigth\n" +
+                              "Heads - move first, Tails - move second\n");
+
             if (gameMode == 1)
             {
                 Console.WriteLine("Player1:");
 
-                if (Console.ReadKey().Key == ConsoleKey.Spacebar)
+                while (Console.ReadKey().Key != ConsoleKey.Spacebar)
+                {
+                    Console.WriteLine("You pressed something else, please, hit space");
+                }
+                //if (Console.ReadKey().Key == ConsoleKey.Spacebar)
                 {
                     Console.WriteLine();
-                    player1Toss = random.Next(1, 10);
-                    aiToss = random.Next(1, 10);
+                    player1Toss = random.Next(1, 20);
+                    aiToss = random.Next(1, 20);
+                    if (player1Toss >= 11 && aiToss < 11)
+                    {
+                        Console.WriteLine("Player 1 trew heads and wins right for a first strike!");
+                        Aiturn = false;
+                        Player1Turn = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ai trew heads and wins right for a first strike!");
+                        Aiturn = true;
+                        Player1Turn = false;
+                    }
                 }
             }
-            if (player1Toss > aiToss)
-            {
-                Aiturn = false;
-                Player1Turn = true;
-            }
-            else
-            {
-                Aiturn = true;
-                Player1Turn = false;
-            }
-            
             if (gameMode == 2)
             {
                 Console.WriteLine("Player1:");
 
-                if (Console.ReadKey().Key == ConsoleKey.Spacebar)
+                while (Console.ReadKey().Key != ConsoleKey.Spacebar)
                 {
-                    Console.WriteLine();
-                    player1Toss = random.Next(1, 10);
-                    
+                    Console.WriteLine("You pressed something else, please, hit space");
                 }
-                Console.WriteLine("Player2:");
-                if (Console.ReadKey().Key == ConsoleKey.Spacebar)
+                Console.WriteLine();
+                player1Toss = random.Next(1, 10);
+
+                Console.WriteLine("Player2:\n");
+                while (Console.ReadKey().Key != ConsoleKey.Spacebar)
                 {
-                    player2Toss = random.Next(1, 10);
+                    Console.WriteLine("You pressed something else, please, hit space");
                 }
-            }
-            if (player1Toss > player2Toss)
-            {
-                Player1Turn = true;
-                Player2Turn = false;
-            }
-            else
-            {
-                Player1Turn = false;
-                Player2Turn = true;
+                player2Toss = random.Next(1, 10);
+
+                if (player1Toss >= 11 && player2Toss < 11)
+                {
+                    Console.WriteLine("Player 1 trew heads and wins right for a first strike!");
+                    Player2Turn = false;
+                    Player1Turn = true;
+                }
+                else
+                {
+                    Console.WriteLine("Player 2 trew heads and wins right for a first strike!");
+                    Player2Turn = true;
+                    Player1Turn = false;
+                }
             }
         }
         public void Rules()
         {
             Console.WriteLine("Rules are simple:\nFor hit to the head press q(player1) or a(player2)\n" +
                               "For hit to the body press w(player1) or s(player2)\n" +
-                              "For hit to the legs press e(player1) or c(player2)\n");
+                              "For hit to the legs press e(player1) or d(player2)\n");
         }
 
         public void Action()
         {
-            string userInput = "";
             Console.WriteLine();
-            Console.WriteLine("\t\tLETS GET READY TO RUMBLE!!\n"+
+            Console.WriteLine("\t\tLETS GET READY TO RUMBLE!!\n" +
                               "\t(please wait a bit, the fighters are getting ready)");
 
             if (gameMode == 1)
@@ -237,116 +245,173 @@ namespace MiddleEarthBrawl
                     Console.Clear();
                     Rules();
                     HealthStatus(player1, ai);
+                    Console.WriteLine("\n\n\t\t\tBattle log:");
 
                     if (Player1Turn)
                     {
-                        Console.WriteLine("\t\tBattle log:");
-                        userInput = Console.ReadLine();
-                        switch (userInput)
-                        {
-                            case "q":
-                                HitToHead(player1, ai);
-                                Player1Turn = false;
-                                Aiturn = true;
-                                break;
-
-
-                            case "w":
-                                HitToBody(player1, ai);
-                                Player1Turn = false;
-                                Aiturn = true;
-                                break;
-                            case "e":
-                                HitToLegs(player1, ai);
-                                Player1Turn = false;
-                                Aiturn = true;
-                                break;
-                        }
+                        Turn();
+                        Player1StrikeVsAi();
                     }
                     if (Aiturn)
                     {
-                        userInput = AiHits();
-                        switch (userInput)
-                        {
-                            case "q":
-                                HitToHead(ai, player1);
-                                Aiturn = false;
-                                Player1Turn = true;
-                                break;
-
-
-                            case "w":
-                                HitToBody(ai, player1);
-                                Aiturn = false;
-                                Player1Turn = true;
-                                break;
-                            case "e":
-                                HitToLegs(ai, player1);
-                                Aiturn = false;
-                                Player1Turn = true;
-                                break;
-                        }
+                        Turn();
+                        Ai1Strike();
                     }
                 }
                 BattleResult(player1, ai);
             }
-            if(gameMode == 2)
+            if (gameMode == 2)
             {
-                Console.Clear();
-                Rules();
-                HealthStatus(player1, ai);
-
-                if (Player1Turn)
+                while (FightIsOn(player1, player2))
                 {
-                    Console.WriteLine("\t\tPlayer1, turn!");
-                    userInput = Console.ReadLine();
+                    Thread.Sleep(5000);
+                    Console.Clear();
+                    Rules();
+                    HealthStatus(player1, player2);
+                    Console.WriteLine("\n\n\t\t\tBattle log:");
 
+                    if (Player1Turn)
+                    {
+                        Turn();
+                        Player1StrikeVsPlayer();
+                    }
+                    if (Player2Turn)
+                    {
+                        Turn();
+                        Player2Strike();
+                    }
                 }
-                else if (Player2Turn)
-                {
-                    Console.WriteLine("\t\tPlayer2, turn!");
-                    userInput = Console.ReadLine();
-                }
-
-                switch (userInput)
-                {
-                    case "q":
-                    case "a":
-                        if (gameMode == 1)
-                        {
-                            HitToHead(player1, ai);
-                            userInput = AiHits();
-                        }
-                        else if (gameMode == 2)
-                        {
-                            HitToHead(player1, player2);
-                        }
-                        break;
-                    case "w":
-                    case "s":
-                        if (gameMode == 1)
-                        {
-                            HitToBody(player1, ai);
-                        }
-                        else if (gameMode == 2)
-                        {
-                            HitToBody(player1, player2);
-                        }
-                        break;
-                    case "e":
-                    case "c":
-                        if (gameMode == 1)
-                        {
-                            HitToLegs(player1, ai);
-                        }
-                        else if (gameMode == 2)
-                        {
-                            HitToLegs(player1, player2);
-                        }
-                        break;
-                }
+                BattleResult(player1, player2);
             }
-            BattleResult(player1, player2);
+        }
+        private void Player1StrikeVsPlayer()
+        {
+            string userInput = Console.ReadLine();
+            switch (userInput)
+            {
+                case "q":
+                    HitToHead(player1, player2);
+                    Player1Turn = false;
+                    Player2Turn = true;
+                    break;
+                case "w":
+                    HitToBody(player1, player2);
+                    Player1Turn = false;
+                    Player2Turn = true;
+                    break;
+                case "e":
+                    HitToLegs(player1, player2);
+                    Player1Turn = false;
+                    Player2Turn = true;
+                    break;
+                default:
+                    Console.WriteLine("\t\t\tКоманда не распознана, попробуйте еще раз");
+                    Player1StrikeVsPlayer();
+                    break;
+            }
+        }
+        private void Player1StrikeVsAi()
+        {
+            string userInput = Console.ReadLine();
+            switch (userInput)
+            {
+                case "q":
+                    HitToHead(player1, ai);
+                    Player1Turn = false;
+                    Aiturn = true;
+                    break;
+                case "w":
+                    HitToBody(player1, ai);
+                    Player1Turn = false;
+                    Aiturn = true;
+                    break;
+                case "e":
+                    HitToLegs(player1, ai);
+                    Player1Turn = false;
+                    Aiturn = true;
+                    break;
+                default:
+                    Console.WriteLine("\t\t\tКоманда не распознана, попробуйте еще раз");
+                    Player1StrikeVsAi();
+                    break;
+            }
+        }
+        private void Player2Strike()
+        {
+            string userInput = Console.ReadLine();
+            switch (userInput)
+            {
+                case "a":
+                    HitToHead(player2, player1);
+                    Player2Turn = false;
+                    Player1Turn = true;
+                    break;
+                case "s":
+                    HitToBody(player2, player1);
+                    Player2Turn = false;
+                    Player1Turn = true;
+                    break;
+                case "d":
+                    HitToLegs(player2, player1);
+                    Player2Turn = false;
+                    Player1Turn = true;
+                    break;
+                default:
+                    Console.WriteLine("\t\t\tКоманда не распознана, попробуйте еще раз");
+                    Player2Strike();
+                    break;
+            }
+        }
+        private void Ai1Strike()
+        {
+            string userInput = AiHits();
+            switch (userInput)
+            {
+                case "q":
+                    HitToHead(ai, player1);
+                    Aiturn = false;
+                    Player1Turn = true;
+                    break;
+                case "w":
+                    HitToBody(ai, player1);
+                    Aiturn = false;
+                    Player1Turn = true;
+                    break;
+                case "e":
+                    HitToLegs(ai, player1);
+                    Aiturn = false;
+                    Player1Turn = true;
+                    break;
+            }
+        }
+        private void Turn()
+        {
+            if (Player1Turn)
+            {
+                Console.WriteLine("Player 1's move:");
+            }
+            if (Aiturn && gameMode == 1)
+            {
+                Console.WriteLine("\nAi's move:");
+            }
+            if (Player2Turn && gameMode == 2)
+            {
+                Console.WriteLine("\nPlayer 2's move:");
+            }
+        }
+        public void ContinueOrEndGame()
+        {
+            Console.WriteLine("\nIf you want to play again, press any key\n" +
+                              "Or hit Escape to quit");
+            if (Console.ReadKey().Key == ConsoleKey.Escape)
+            {
+                PlayAgain = false;
+            }
+            else
+            {
+                PlayAgain = true;
+            }
+            Console.Clear();
         }
     }
 }
