@@ -7,10 +7,15 @@ namespace MiddleEarthBrawl
         static void Main(string[] args)
         {
            
-            GameManager newGame = new();
+            CoreOperations newGame = new();
             while (newGame.PlayAgain)
             {
-                newGame.GameStart();
+                newGame.GreetUser();
+                newGame.ChooseGameMode();
+                newGame.ChooseFighter();
+                newGame.FirstStrikeTryOut();
+                newGame.Action();
+                newGame.ContinueOrEndGame();
             }
             Environment.Exit(1);
 
