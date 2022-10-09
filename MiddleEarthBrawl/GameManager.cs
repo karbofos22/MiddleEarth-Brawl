@@ -8,34 +8,39 @@ using System.Threading.Tasks;
 
 namespace MiddleEarthBrawl
 {
-
-
-
-    class CoreOperations : Fighters
+    class GameManager : Fighters
     {
-        private Fighters player1 { get; set; }
-        private Fighters player2 { get; set; }
-        private Fighters ai { get; set; }
-        private int gameMode { get; set; }
+        private Fighters Player1 { get; set; }
+        private Fighters Player2 { get; set; }
+        private Fighters Ai { get; set; }
+        private int GameMode { get; set; }
         private bool Player1Turn { get; set; }
         private bool Player2Turn { get; set; }
         private bool Aiturn { get; set; }
         public bool PlayAgain = true;
 
+        public void Start()
+        {
+            GreetUser();
+            ChooseGameMode();
+            ChooseFighter();
+            FirstStrikeTryOut();
+            Action();
+            ContinueOrEndGame();
+        }
 
-        public void GreetUser()
+        private void GreetUser()
         {
             Console.WriteLine("\t\t\t  Good day to you, sir!\n\t\t Welcome to our little fighting game!\n");
             Console.WriteLine();
             Console.WriteLine();
         }
-
-        public void ChooseGameMode()
+        private void ChooseGameMode()
         {
             Console.WriteLine("Please, choose game mode: Player vs AI(1) or Player vs Player(2)\n");
-            gameMode = Convert.ToInt32(Console.ReadLine());
+            GameMode = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine();
-            switch (gameMode)
+            switch (GameMode)
             {
                 case 1:
                     Console.WriteLine("You selected \"Player vs AI\" game mode\n");
@@ -49,10 +54,9 @@ namespace MiddleEarthBrawl
                     break;
             }
         }
-
-        public void ChooseFighter()
+        private void ChooseFighter()
         {
-            if (gameMode == 1)
+            if (GameMode == 1)
             {
 
                 Console.WriteLine(
@@ -64,18 +68,18 @@ namespace MiddleEarthBrawl
                 switch (userInput)
                 {
                     case "1":
-                        player1 = CreateHumanFighter();
-                        WarriorInfo(player1);
+                        Player1 = CreateHumanFighter();
+                        WarriorInfo(Player1);
                         CreateRandomAI();
                         break;
                     case "2":
-                        player1 = CreateDwarfFighter();
-                        WarriorInfo(player1);
+                        Player1 = CreateDwarfFighter();
+                        WarriorInfo(Player1);
                         CreateRandomAI();
                         break;
                     case "3":
-                        player1 = CreateElfFighter();
-                        WarriorInfo(player1);
+                        Player1 = CreateElfFighter();
+                        WarriorInfo(Player1);
                         CreateRandomAI();
                         break;
                     default:
@@ -84,7 +88,7 @@ namespace MiddleEarthBrawl
                         break;
                 }
             }
-            else if (gameMode == 2)
+            else if (GameMode == 2)
             {
                 Console.WriteLine(
                 "If you want to choose mighty human knight - Sigfrid, enter 1 and press Enter\n" +
@@ -96,16 +100,16 @@ namespace MiddleEarthBrawl
                 switch (userInput)
                 {
                     case "1":
-                        player1 = CreateHumanFighter();
-                        WarriorInfo(player1);
+                        Player1 = CreateHumanFighter();
+                        WarriorInfo(Player1);
                         break;
                     case "2":
-                        player1 = CreateDwarfFighter();
-                        WarriorInfo(player1);
+                        Player1 = CreateDwarfFighter();
+                        WarriorInfo(Player1);
                         break;
                     case "3":
-                        player1 = CreateElfFighter();
-                        WarriorInfo(player1);
+                        Player1 = CreateElfFighter();
+                        WarriorInfo(Player1);
                         break;
                     default:
                         Console.WriteLine("Вы не сделали выбор, пожалуйста, выберите персонажа");
@@ -117,16 +121,16 @@ namespace MiddleEarthBrawl
                 switch (userInput2)
                 {
                     case "1":
-                        player2 = CreateHumanFighter();
-                        WarriorInfo(player2);
+                        Player2 = CreateHumanFighter();
+                        WarriorInfo(Player2);
                         break;
                     case "2":
-                        player2 = CreateDwarfFighter();
-                        WarriorInfo(player2);
+                        Player2 = CreateDwarfFighter();
+                        WarriorInfo(Player2);
                         break;
                     case "3":
-                        player2 = CreateElfFighter();
-                        WarriorInfo(player2);
+                        Player2 = CreateElfFighter();
+                        WarriorInfo(Player2);
                         break;
                     default:
                         Console.WriteLine("Вы не сделали выбор, пожалуйста, выберите персонажа");
@@ -136,27 +140,26 @@ namespace MiddleEarthBrawl
 
             }
         }
-        public void CreateRandomAI()
+        private void CreateRandomAI()
         {
             Random random = new();
             int randomNum = random.Next(1, 3);
             switch (randomNum)
             {
                 case 1:
-                    ai = CreateHumanFighter();
+                    Ai = CreateHumanFighter();
                     break;
                 case 2:
-                    ai = CreateDwarfFighter();
+                    Ai = CreateDwarfFighter();
                     break;
                 case 3:
-                    ai = CreateElfFighter();
+                    Ai = CreateElfFighter();
                     break;
                 default:
                     break;
             }
         }
-
-        public void FirstStrikeTryOut()
+        private void FirstStrikeTryOut()
         {
             Random random = new();
             int player1Toss = 0;
@@ -165,7 +168,7 @@ namespace MiddleEarthBrawl
             Console.WriteLine("Warriors! Toss a coin(press \"space\") for the first strike rigth\n" +
                               "Heads - move first, Tails - move second\n");
 
-            if (gameMode == 1)
+            if (GameMode == 1)
             {
                 Console.WriteLine("Player1:");
 
@@ -192,7 +195,7 @@ namespace MiddleEarthBrawl
                     }
                 }
             }
-            if (gameMode == 2)
+            if (GameMode == 2)
             {
                 Console.WriteLine("Player1:");
 
@@ -224,27 +227,27 @@ namespace MiddleEarthBrawl
                 }
             }
         }
-        public void Rules()
+        private void Rules()
         {
             Console.WriteLine("Rules are simple:\nFor hit to the head press q(player1) or a(player2)\n" +
                               "For hit to the body press w(player1) or s(player2)\n" +
                               "For hit to the legs press e(player1) or d(player2)\n");
         }
 
-        public void Action()
+        private void Action()
         {
             Console.WriteLine();
             Console.WriteLine("\t\tLETS GET READY TO RUMBLE!!\n" +
                               "\t(please wait a bit, the fighters are getting ready)");
 
-            if (gameMode == 1)
+            if (GameMode == 1)
             {
-                while (FightIsOn(player1, ai))
+                while (FightIsOn(Player1, Ai))
                 {
                     Thread.Sleep(5000);
                     Console.Clear();
                     Rules();
-                    HealthStatus(player1, ai);
+                    HealthStatus(Player1, Ai);
                     Console.WriteLine("\n\n\t\t\tBattle log:");
 
                     if (Player1Turn)
@@ -258,16 +261,16 @@ namespace MiddleEarthBrawl
                         Ai1Strike();
                     }
                 }
-                BattleResult(player1, ai);
+                BattleResult(Player1, Ai);
             }
-            if (gameMode == 2)
+            if (GameMode == 2)
             {
-                while (FightIsOn(player1, player2))
+                while (FightIsOn(Player1, Player2))
                 {
-                    Thread.Sleep(5000);
+                    Thread.Sleep(7000);
                     Console.Clear();
                     Rules();
-                    HealthStatus(player1, player2);
+                    HealthStatus(Player1, Player2);
                     Console.WriteLine("\n\n\t\t\tBattle log:");
 
                     if (Player1Turn)
@@ -281,7 +284,7 @@ namespace MiddleEarthBrawl
                         Player2Strike();
                     }
                 }
-                BattleResult(player1, player2);
+                BattleResult(Player1, Player2);
             }
         }
         private void Player1StrikeVsPlayer()
@@ -290,17 +293,17 @@ namespace MiddleEarthBrawl
             switch (userInput)
             {
                 case "q":
-                    HitToHead(player1, player2);
+                    HitToHead(Player1, Player2);
                     Player1Turn = false;
                     Player2Turn = true;
                     break;
                 case "w":
-                    HitToBody(player1, player2);
+                    HitToBody(Player1, Player2);
                     Player1Turn = false;
                     Player2Turn = true;
                     break;
                 case "e":
-                    HitToLegs(player1, player2);
+                    HitToLegs(Player1, Player2);
                     Player1Turn = false;
                     Player2Turn = true;
                     break;
@@ -316,17 +319,17 @@ namespace MiddleEarthBrawl
             switch (userInput)
             {
                 case "q":
-                    HitToHead(player1, ai);
+                    HitToHead(Player1, Ai);
                     Player1Turn = false;
                     Aiturn = true;
                     break;
                 case "w":
-                    HitToBody(player1, ai);
+                    HitToBody(Player1, Ai);
                     Player1Turn = false;
                     Aiturn = true;
                     break;
                 case "e":
-                    HitToLegs(player1, ai);
+                    HitToLegs(Player1, Ai);
                     Player1Turn = false;
                     Aiturn = true;
                     break;
@@ -342,17 +345,17 @@ namespace MiddleEarthBrawl
             switch (userInput)
             {
                 case "a":
-                    HitToHead(player2, player1);
+                    HitToHead(Player2, Player1);
                     Player2Turn = false;
                     Player1Turn = true;
                     break;
                 case "s":
-                    HitToBody(player2, player1);
+                    HitToBody(Player2, Player1);
                     Player2Turn = false;
                     Player1Turn = true;
                     break;
                 case "d":
-                    HitToLegs(player2, player1);
+                    HitToLegs(Player2, Player1);
                     Player2Turn = false;
                     Player1Turn = true;
                     break;
@@ -368,17 +371,17 @@ namespace MiddleEarthBrawl
             switch (userInput)
             {
                 case "q":
-                    HitToHead(ai, player1);
+                    HitToHead(Ai, Player1);
                     Aiturn = false;
                     Player1Turn = true;
                     break;
                 case "w":
-                    HitToBody(ai, player1);
+                    HitToBody(Ai, Player1);
                     Aiturn = false;
                     Player1Turn = true;
                     break;
                 case "e":
-                    HitToLegs(ai, player1);
+                    HitToLegs(Ai, Player1);
                     Aiturn = false;
                     Player1Turn = true;
                     break;
@@ -390,16 +393,16 @@ namespace MiddleEarthBrawl
             {
                 Console.WriteLine("Player 1's move:");
             }
-            if (Aiturn && gameMode == 1)
+            if (Aiturn && GameMode == 1)
             {
                 Console.WriteLine("\nAi's move:");
             }
-            if (Player2Turn && gameMode == 2)
+            if (Player2Turn && GameMode == 2)
             {
                 Console.WriteLine("\nPlayer 2's move:");
             }
         }
-        public void ContinueOrEndGame()
+        private void ContinueOrEndGame()
         {
             Console.WriteLine("\nIf you want to play again, press any key\n" +
                               "Or hit Escape to quit");
